@@ -3,17 +3,19 @@ using UnityEngine;
 
 public class fanScript : MonoBehaviour
 {
-    public float fanForce = 70f;
     private List<Rigidbody2D> objectsPhysicList = new List<Rigidbody2D>();
 
-    private void Update()
+    public float fanForceY = 0.3f;
+    public float fanForceX = 0.3f;
+    
+    private void FixedUpdate()
     {
-        Vector2 forceDirection = new Vector2(0, 1).normalized;
+        
         foreach (var rb in objectsPhysicList)
         {
             if (rb != null)
             {
-                rb.AddForce(forceDirection * fanForce * Time.deltaTime, ForceMode2D.Impulse);
+                rb.AddForce(new Vector2(fanForceX, fanForceY), ForceMode2D.Impulse);
             }
         }
     }

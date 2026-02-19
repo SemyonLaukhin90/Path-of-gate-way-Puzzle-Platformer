@@ -10,6 +10,10 @@ public class PlayerMovement : MonoBehaviour
 
     public float rayDistance = 2f;
 
+    private bool canjump = true;
+
+    private bool canjump2 = false;
+
     private void Start()
     {
         physic = GetComponent<Rigidbody2D>();
@@ -30,10 +34,29 @@ public class PlayerMovement : MonoBehaviour
 
         float moveInput = Input.GetAxis("Horizontal");
         physic.linearVelocity = new Vector2(moveInput * moveSpeed, physic.linearVelocity.y);
-
-        if (Input.GetKeyDown(KeyCode.Space) && isGround && Time.timeScale == 1f)
+        if (!isGround)
         {
-            physic.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            canjump = true;
         }
+        else
+        {
+            if (Input.GetKey(KeyCode.Space) && canjump && canjump2 && Time.timeScale == 1f)
+            {
+                Jump();
+            }
+        }
+    }
+    private void Jump()
+    {
+        canjump = false;
+        physic.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        canjump2 = true;
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        canjump2 = false;
     }
 }
